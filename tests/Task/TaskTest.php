@@ -10,7 +10,11 @@ class TaskTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->task = new Task("Test Name", "Description");
+        $this->task = new Task(
+            "Test Name",
+            "Description",
+            1
+        );
     }
 
     protected function tearDown(): void
@@ -31,6 +35,14 @@ class TaskTest extends TestCase
      */
     public function testDescription()
     {
-        $this->assertEquals("Description", $this->task->getDescrption());
+        $this->assertEquals("Description", $this->task->getDescription());
+    }
+
+    /**
+     * Test a task user id
+     */
+    public function testUserId()
+    {
+        $this->assertEquals(1, $this->task->getUserId());
     }
 }

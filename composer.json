@@ -1,6 +1,9 @@
 {
     "name" : "task manager",
-    "require": {},
+    "require": {
+      "ext-mysqli": "*",
+        "ext-ibm_db2": "*"
+    },
     "autoload": {
         "psr-4": {
             "App\\": "src/Classes"

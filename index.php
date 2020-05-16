@@ -11,25 +11,72 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
 <body>
-    <?php require_once 'procces.php'?>
+    <?php require_once 'process.php';
+        use App\Database;
+        use App\Task;
+    ?>
+
+    <?php
+        $database = New Database();
+        $connection = $database->connect();
+        $tasks = new Task();
+
+        $result = $tasks->select($connection);
+    ?>
+    <div class = "container">
     <div class = "row justify-content-center">
-        <form action="procces.php" method="post">
+        <table class = "table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th colspan="2">Action</th>
+                </tr>
+            </thead>
+            <?php
+                while ($row = mysqli_fetch_assoc($result)): ?>
+            <tr>
+                <td><?php echo $row['name']?></td>
+                <td><?php echo $row['description']?></td>
+                <td>
+                    <a href="index.php?edit=<?php echo $row['id']; ?>"
+                        class = "btn btn-info">Edit</a>
+                    <a href="process.php?delete=<?php echo $row['id']; ?>"
+                       class = "btn btn-danger">Delete</a>
+                </td>
+                <?php endwhile;?>
+            </tr>
+        </table>
+    </div>
+
+    <div class = "row justify-content-center">
+        <form action="process.php" method="post">
+            <input type="hidden" name = "id" value = "<?php echo $id; ?>">
             <div class = "form-group">
-                <!-- Add user selector -->
+                <label>userId</label>
+                <input type="text" name="userId" class="form-control" placeholder="userId">
           </div>
             <div class = "form-group">
                 <label>Task name</label>
-                <input type="text" name="name" class="form-control" value="Enter task name">
+                <input type="text" name="name" class="form-control"
+                       value="<?php echo $name; ?>" placeholder="Enter task name">
             </div>
             <div class = "form-group">
                 <label>Description</label>
-                <input type="text" name="description" class="form-control" value="Enter description">
+                <input type="text" name="description" class="form-control"
+                       value="<?php echo $description; ?>" placeholder="Enter description">
             </div>
             <div class="form-group">
+                <?php
+                    if($update == "true"):
+                ?>
+                <button type="submit" class="btn btn-info" name="update">Update</button>
+                <?php else:?>
                 <button type="submit" class="btn btn-primary" name="save">Save</button>
+                <?php endif?>
             </div>
         </form>
     </div>
+    </div>
 </body>
-
 </html>
