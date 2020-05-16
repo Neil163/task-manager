@@ -14,37 +14,39 @@
     <?php require_once 'process.php';
         use App\Database;
         use App\Task;
+    use App\User;
+
     ?>
 
     <?php
         $database = New Database();
         $connection = $database->connect();
-        $tasks = new Task();
+        $task = new Task();
 
-        $result = $tasks->select($connection);
+        $tasksArray = json_decode($task->get($connection), true);
     ?>
     <div class = "container">
     <div class = "row justify-content-center">
         <table class = "table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Location</th>
+                    <th>Task name</th>
+                    <th>Description</th>
                     <th colspan="2">Action</th>
                 </tr>
             </thead>
             <?php
-                while ($row = mysqli_fetch_assoc($result)): ?>
+                foreach ($tasksArray as $task):?>
             <tr>
-                <td><?php echo $row['name']?></td>
-                <td><?php echo $row['description']?></td>
+                <td><?php echo $task['name']?></td>
+                <td><?php echo $task['description']?></td>
                 <td>
-                    <a href="index.php?edit=<?php echo $row['id']; ?>"
+                    <a href="index.php?edit=<?php echo $task['id']; ?>"
                         class = "btn btn-info">Edit</a>
-                    <a href="process.php?delete=<?php echo $row['id']; ?>"
+                    <a href="process.php?delete=<?php echo $task['id']; ?>"
                        class = "btn btn-danger">Delete</a>
                 </td>
-                <?php endwhile;?>
+                <?php endforeach;?>
             </tr>
         </table>
     </div>
@@ -53,8 +55,19 @@
         <form action="process.php" method="post">
             <input type="hidden" name = "id" value = "<?php echo $id; ?>">
             <div class = "form-group">
-                <label>userId</label>
-                <input type="text" name="userId" class="form-control" placeholder="userId">
+                <label>User</label>
+                <?php
+                    $users = new User();
+
+                    $usersArray = json_decode($users->get($connection), true);
+                ?>
+                <select class="form-control" name="userId">
+                    <?php
+                        foreach($usersArray as $user): ?>
+                    <option value = "<?echo $user['id']?>"><?echo $user['name']?></option>
+                    <?php endforeach;?>
+
+                </select>
           </div>
             <div class = "form-group">
                 <label>Task name</label>
@@ -63,8 +76,7 @@
             </div>
             <div class = "form-group">
                 <label>Description</label>
-                <input type="text" name="description" class="form-control"
-                       value="<?php echo $description; ?>" placeholder="Enter description">
+                <textarea name="description" class="form-control" placeholder="Enter description"><?php echo $description; ?></textarea>
             </div>
             <div class="form-group">
                 <?php

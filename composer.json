@@ -2,7 +2,8 @@
     "name" : "task manager",
     "require": {
       "ext-mysqli": "*",
-        "ext-ibm_db2": "*"
+        "ext-ibm_db2": "*",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

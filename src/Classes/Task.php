@@ -98,15 +98,16 @@ class Task
     }
 
     /**
-     * Select tasks
+     * get tasks
      *
      * @param $connection
      * @param string $condition
      *
      * @return mixed
      */
-    public function select($connection, string $condition = null)
+    public function get($connection, string $condition = null)
     {
+        $tasks = array();
         if($condition) {
             $result = $connection->query("SELECT * from tasks {$condition}") or
                 die($connection->error);
@@ -114,8 +115,15 @@ class Task
             $result = $connection->query("SELECT * from tasks") or
                 die($connection->error);
         }
+        while ($row = mysqli_fetch_assoc($result)) {
+            $tasks[$row['id']] = array(
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'description' => $row['description'],
+            );
+        }
 
-        return $result;
+        return json_encode($tasks);
     }
 
     public function update($connection, int $id)

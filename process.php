@@ -15,13 +15,17 @@ $connection = $database->connect();
 $task = new Task();
 
 if (isset($_POST['save'])) {
-    $task->setUserId($_POST['userId']);
-    $task->setName($_POST['name']);
-    $task->setDescription($_POST['description']);
+    if (empty($_POST['userId']) || empty($_POST['name']) || empty($_POST['description'])) {
+        echo "Error: please enter a data in all fields";
+    } else {
+        $task->setUserId($_POST['userId']);
+        $task->setName($_POST['name']);
+        $task->setDescription($_POST['description']);
 
-    $task->post($connection);
+        $task->post($connection);
 
-    header("location: index.php");
+        header("location: index.php");
+    }
 }
 
 if (isset($_GET['delete'])) {
@@ -33,11 +37,15 @@ if (isset($_GET['delete'])) {
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $update = true;
-    $result = $task->select($connection, "WHERE id = {$_GET['edit']}");
+    $result = json_decode($task->get(
+        $connection,
+        "WHERE id = {$_GET['edit']}"),
+        true
+    );
     if (count($result) === 1) {
-        $row = mysqli_fetch_assoc($result);
-        $name = $row['name'];
-        $description = $row['description'];
+        $row = $result;
+        $name = $row[$id]['name'];
+        $description = $row[$id]['description'];
     }
 }
 
@@ -50,6 +58,5 @@ if(isset($_POST['update'])) {
 
     header("location: index.php");
 }
-
 
 
