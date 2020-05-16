@@ -12,6 +12,7 @@ class Task
 
     /**
      * Task constructor.
+     *
      * @param string $name
      * @param string $description
      * @param int $userId
@@ -27,6 +28,8 @@ class Task
     }
 
     /**
+     * Get a name
+     *
      * @return string
      */
     public function getName(): string
@@ -35,6 +38,8 @@ class Task
     }
 
     /**
+     * Set a name
+     *
      * @param string $name
      */
     public function setName(string $name): void
@@ -43,6 +48,8 @@ class Task
     }
 
     /**
+     * Get a description of task
+     *
      * @return string
      */
     public function getDescription(): string
@@ -51,6 +58,8 @@ class Task
     }
 
     /**
+     * Set a description of task
+     *
      * @param string $description
      */
     public function setDescription(string $description): void
@@ -59,6 +68,8 @@ class Task
     }
 
     /**
+     * Get an user id
+     *
      * @return int
      */
     public function getUserId(): int
@@ -67,6 +78,8 @@ class Task
     }
 
     /**
+     * Set an user id
+     *
      * @param int $userId
      */
     public function setUserId(int $userId): void
@@ -75,7 +88,7 @@ class Task
     }
 
     /**
-     * Post a Task
+     * Post a task
      *
      * @param $connection
      */
@@ -126,6 +139,13 @@ class Task
         return json_encode($tasks);
     }
 
+    /**
+     * Update a task
+     *
+     * @param $connection
+     *
+     * @param int $id
+     */
     public function update($connection, int $id)
     {
         $connection->query("UPDATE tasks SET name = '$this->name', description = '$this->description' WHERE id = $id") or

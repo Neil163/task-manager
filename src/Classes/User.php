@@ -6,6 +6,12 @@ namespace App;
 
 class User
 {
+    /**
+     * Get users
+     *
+     * @param $connection
+     * @return false|string
+     */
     public function get($connection)
     {
         $users = array();

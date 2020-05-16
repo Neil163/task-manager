@@ -11,20 +11,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
 <body>
-    <?php require_once 'process.php';
-        use App\Database;
-        use App\Task;
-    use App\User;
-
-    ?>
-
-    <?php
-        $database = New Database();
-        $connection = $database->connect();
-        $task = new Task();
-
-        $tasksArray = json_decode($task->get($connection), true);
-    ?>
+    <?php require_once 'process.php'; ?>
+    <?php $tasksArray = json_decode($task->get($connection), true); ?>
     <div class = "container">
     <div class = "row justify-content-center">
         <table class = "table">
@@ -56,11 +44,7 @@
             <input type="hidden" name = "id" value = "<?php echo $id; ?>">
             <div class = "form-group">
                 <label>User</label>
-                <?php
-                    $users = new User();
-
-                    $usersArray = json_decode($users->get($connection), true);
-                ?>
+                <?php $usersArray = json_decode($users->get($connection), true); ?>
                 <select class="form-control" name="userId">
                     <?php
                         foreach($usersArray as $user): ?>
@@ -79,9 +63,7 @@
                 <textarea name="description" class="form-control" placeholder="Enter description"><?php echo $description; ?></textarea>
             </div>
             <div class="form-group">
-                <?php
-                    if($update == "true"):
-                ?>
+                <?php if($update == "true"):?>
                 <button type="submit" class="btn btn-info" name="update">Update</button>
                 <?php else:?>
                 <button type="submit" class="btn btn-primary" name="save">Save</button>

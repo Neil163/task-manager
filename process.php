@@ -4,6 +4,7 @@ require "vendor/autoload.php";
 
 use App\Database;
 use App\Task;
+use App\User;
 
 $id = null;
 $name = null;
@@ -13,6 +14,8 @@ $update = null;
 $database = new Database();
 $connection = $database->connect();
 $task = new Task();
+$users = new User();
+
 
 if (isset($_POST['save'])) {
     if (empty($_POST['userId']) || empty($_POST['name']) || empty($_POST['description'])) {
@@ -50,13 +53,19 @@ if (isset($_GET['edit'])) {
 }
 
 if(isset($_POST['update'])) {
-    $id = $_POST['id'];
-    $task->setName($_POST['name']);
-    $task->setDescription($_POST['description']);
+    if (empty($_POST['userId']) || empty($_POST['name']) || empty($_POST['description'])) {
+        echo "Error: please enter a data in all fields";
+    } else {
+        $id = $_POST['id'];
+        //Todo: add change user id
+        //Todo: add status
+        $task->setName($_POST['name']);
+        $task->setDescription($_POST['description']);
 
-    $task->update($connection, (int)$id);
+        $task->update($connection, (int)$id);
 
-    header("location: index.php");
+        header("location: index.php");
+    }
 }
 
 
