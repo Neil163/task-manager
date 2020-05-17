@@ -1,4 +1,5 @@
 App name: Task manager
+
 To run the app you need:
 1. git clone this repo
 2. Instal php7.4.*, apache, mysql (for example, openServer)
