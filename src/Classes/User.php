@@ -9,7 +9,7 @@ class User
     /**
      * Get users
      *
-     * @param $connection
+     * @param mysqli $connection
      * @return false|string
      */
     public function get($connection)

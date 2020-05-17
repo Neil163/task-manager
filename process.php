@@ -3,6 +3,7 @@
 require "vendor/autoload.php";
 
 use App\Database;
+use App\Status;
 use App\Task;
 use App\User;
 
@@ -15,15 +16,17 @@ $database = new Database();
 $connection = $database->connect();
 $task = new Task();
 $users = new User();
+$statuses = new Status();
 
-
+//Save a task functionality
 if (isset($_POST['save'])) {
-    if (empty($_POST['userId']) || empty($_POST['name']) || empty($_POST['description'])) {
+    if (empty($_POST['userId']) || empty($_POST['name']) || empty($_POST['description']) || empty($_POST['statusId'])) {
         echo "Error: please enter a data in all fields";
     } else {
         $task->setUserId($_POST['userId']);
         $task->setName($_POST['name']);
         $task->setDescription($_POST['description']);
+        $task->setStatusId($_POST['statusId']);
 
         $task->post($connection);
 
@@ -31,12 +34,14 @@ if (isset($_POST['save'])) {
     }
 }
 
+//Delete a task functionality
 if (isset($_GET['delete'])) {
     $task->delete($connection, $_GET['delete']);
 
     header("location: index.php");
 }
 
+//Edit button is pressed
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $update = true;
@@ -52,20 +57,19 @@ if (isset($_GET['edit'])) {
     }
 }
 
+//Update a task functionality
 if(isset($_POST['update'])) {
-    if (empty($_POST['userId']) || empty($_POST['name']) || empty($_POST['description'])) {
+    if (empty($_POST['userId']) || empty($_POST['name']) || empty($_POST['description']) || empty($_POST['statusId'])) {
         echo "Error: please enter a data in all fields";
     } else {
         $id = $_POST['id'];
-        //Todo: add change user id
-        //Todo: add status
+        $task->setUserId($_POST['userId']);
         $task->setName($_POST['name']);
         $task->setDescription($_POST['description']);
+        $task->setStatusId($_POST['statusId']);
 
         $task->update($connection, (int)$id);
 
         header("location: index.php");
     }
 }
-
-
