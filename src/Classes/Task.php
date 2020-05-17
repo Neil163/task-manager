@@ -122,7 +122,7 @@ class Task
      *
      * @param mysqli $connection
      */
-    public function post(mysqli $connection): void
+    public function create(mysqli $connection): void
     {
         $connection->query(
             "INSERT INTO {$this->taskTable} (user_id, status_id, name, description) 
@@ -209,6 +209,9 @@ class Task
             $result = $connection->query("SELECT * from {$this->taskTable}") or
                 die($connection->error);
         }
+        if (!$result) {
+            return "404 not found";
+        }
         while ($row = mysqli_fetch_assoc($result)) {
             $tasks[$row['id']] = array(
                 'id' => $row['id'],
@@ -217,7 +220,9 @@ class Task
 
             );
         }
-
+        if (!$tasks) {
+            return 404;
+        }
         return json_encode($tasks);
     }
 

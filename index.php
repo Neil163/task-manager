@@ -75,10 +75,8 @@
             <input type="hidden" name="id" value="<?php echo $id; ?>">
             <div class="form-group">
                 <label>User</label>
-                <?php $usersArray = json_decode($users->get($connection), true); ?>
                 <select class="form-control" name="userId">
-                    <?php
-                    foreach ($usersArray as $user): ?>
+                    <?php foreach ($usersArray as $user):?>
                         <option value="<? echo $user['id'] ?>"><? echo $user['name'] ?></option>
                     <?php endforeach; ?>
 
@@ -87,8 +85,7 @@
             <div class="form-group">
                 <label>Status</label>
                 <select class="form-control" name="statusId">
-                    <?php
-                    foreach ($statusesArray as $status): ?>
+                    <?php foreach ($statusesArray as $status): ?>
                         <option value="<? echo $status['id'] ?>"><? echo $status['name'] ?></option>
                     <?php endforeach; ?>
 

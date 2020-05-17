@@ -21,6 +21,7 @@ $statuses = new Status();
 
 $tasksArray = json_decode($task->getJoin($connection, $filterStatusId), true);
 $statusesArray = json_decode($statuses->get($connection), true);
+$usersArray = json_decode($users->get($connection), true);
 
 //Save a task functionality
 if (isset($_POST['save'])) {
@@ -32,7 +33,7 @@ if (isset($_POST['save'])) {
         $task->setDescription($_POST['description']);
         $task->setStatusId($_POST['statusId']);
 
-        $task->post($connection);
+        $task->create($connection);
 
         header("location: index.php");
     }
@@ -92,3 +93,5 @@ if(isset($_POST['update'])) {
         header("location: index.php");
     }
 }
+
+$connection->close();
