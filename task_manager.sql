@@ -1,4 +1,3 @@
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -52,10 +51,10 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `user_id`, `status_id`, `name`, `description`) VALUES
-(1, 1, 1, 'Mikhail123', 'des'),
-(13, 2, 2, 'das123', 'dsa123'),
-(18, 1, 3, 'test status', 'test'),
-(39, 3, 2, 'new123', 'new');
+(1, 1, 1, 'Task 1', 'learn php'),
+(13, 2, 2, 'Task 2', 'learn sql'),
+(18, 1, 3, 'Task 3', 'learn phpunit'),
+(39, 3, 2, 'Task 4', 'learn js');
 
 -- --------------------------------------------------------
 
@@ -74,8 +73,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`) VALUES
 (1, 'Mikhail'),
-(2, 'Vova'),
-(3, 'test123');
+(2, 'Roman'),
+(3, 'Alex');
 
 --
 -- Индексы сохранённых таблиц
