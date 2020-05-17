@@ -11,12 +11,16 @@ $id = null;
 $name = null;
 $description = null;
 $update = null;
+$filterStatusId = null;
 
 $database = new Database();
 $connection = $database->connect();
 $task = new Task();
 $users = new User();
 $statuses = new Status();
+
+$tasksArray = json_decode($task->getJoin($connection, $filterStatusId), true);
+$statusesArray = json_decode($statuses->get($connection), true);
 
 //Save a task functionality
 if (isset($_POST['save'])) {
@@ -45,7 +49,7 @@ if (isset($_GET['delete'])) {
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $update = true;
-    $result = json_decode($task->get(
+    $result = json_decode($task->getTasks(
         $connection,
         "WHERE id = {$_GET['edit']}"),
         true
@@ -55,6 +59,18 @@ if (isset($_GET['edit'])) {
         $name = $row[$id]['name'];
         $description = $row[$id]['description'];
     }
+}
+
+//Filter button is pressed
+if (isset($_GET['filter'])) {
+    $filterStatusId = $_GET['filter'];
+    $tasksArray = json_decode($task->getJoin($connection, $filterStatusId), true);
+}
+
+//Clear filter button is pressed
+if (isset($_GET['clear'])) {
+    //$filterStatusId = null;
+    //$tasksArray = json_decode($task->get($connection, $filterStatusId), true);
 }
 
 //Update a task functionality

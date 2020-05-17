@@ -143,27 +143,26 @@ class Task
     }
 
     /**
-     * get tasks
+     * get tasks with other table's data
      *
-     * @param $connection
-     * @param string $condition
-     *
+     * @param mysqli $connection
+     * @param string|null $condition
      * @return mixed
      */
-    public function get(mysqli $connection, string $condition = null)
+    public function getJoin(mysqli $connection, string $condition = null)
     {
         $tasks = array();
         if ($condition) {
             $result = $connection->query("
-                SELECT 
-                    {$this->taskTable}.id AS id, 
-                    {$this->taskTable}.name as task_name, 
-                    {$this->taskTable}.description as description, 
-                    {$this->userTable}.name AS user_name, 
-                    {$this->statusTable}.name AS status_name  
-                FROM {$this->taskTable} 
-                JOIN {$this->userTable} ON tasks.user_id = users.id 
-                JOIN {$this->statusTable} ON tasks.status_id = status.id 
+                SELECT
+                    {$this->taskTable}.id AS id,
+                    {$this->taskTable}.name as task_name,
+                    {$this->taskTable}.description as description,
+                    {$this->userTable}.name AS user_name,
+                    {$this->statusTable}.name AS status_name
+                FROM {$this->taskTable}
+                JOIN {$this->userTable} ON {$this->taskTable}.user_id = {$this->userTable}.id
+                JOIN {$this->statusTable} ON {$this->taskTable}.status_id = {$this->statusTable}.id 
                 {$condition}
             ") or die($connection->error);
         } else {
@@ -175,8 +174,8 @@ class Task
                     {$this->userTable}.name AS user_name, 
                     {$this->statusTable}.name AS status_name  
                 FROM {$this->taskTable} 
-                JOIN {$this->userTable} ON tasks.user_id = users.id 
-                JOIN {$this->statusTable} ON tasks.status_id = status.id 
+                JOIN {$this->userTable} ON {$this->taskTable}.user_id = {$this->userTable}.id 
+                JOIN {$this->statusTable} ON {$this->taskTable}.status_id = {$this->statusTable}.id 
             ") or die($connection->error);
         }
         while ($row = mysqli_fetch_assoc($result)) {
@@ -186,6 +185,36 @@ class Task
                 'description' => $row['description'],
                 'user_name' => $row['user_name'],
                 'status_name' => $row['status_name'],
+            );
+        }
+
+        return json_encode($tasks);
+    }
+
+    /**
+     * Get tasks
+     *
+     * @param mysqli $connection
+     * @param string|null $condition
+     * @return false|string
+     */
+    public function getTasks(mysqli $connection, string $condition = null)
+    {
+        $tasks = array();
+
+        if ($condition) {
+            $result = $connection->query("SELECT * from {$this->taskTable} {$condition}") or
+                die($connection->error);
+        } else {
+            $result = $connection->query("SELECT * from {$this->taskTable}") or
+                die($connection->error);
+        }
+        while ($row = mysqli_fetch_assoc($result)) {
+            $tasks[$row['id']] = array(
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'description' => $row['description'],
+
             );
         }
 

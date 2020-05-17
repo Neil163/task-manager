@@ -19,8 +19,28 @@
 </head>
 <body>
 <?php require_once 'process.php'; ?>
-<?php $tasksArray = json_decode($task->get($connection), true); ?>
+
 <div class="container">
+    <div class=" justify-content-center">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th colspan="2">Action</th>
+            </tr>
+            </thead>
+            <?php foreach ($statusesArray as $status): ?>
+            <tr>
+                <td><?php echo $status['name'] ?></td>
+                <td>
+                    <a href="index.php?filter=<?php echo $status['id']; ?>"
+                       class="btn btn-info">filter</a>
+                </td>
+                <?php endforeach; ?>
+            </tr>
+        </table>
+
+    </div>
     <div class="row justify-content-center">
         <table class="table">
             <thead>
@@ -32,8 +52,7 @@
                 <th colspan="2">Action</th>
             </tr>
             </thead>
-            <?php
-            foreach ($tasksArray as $task): ?>
+            <?php foreach ($tasksArray as $task): ?>
             <tr>
                 <td><?php echo $task['task_name'] ?></td>
                 <td><?php echo $task['status_name'] ?></td>
@@ -66,7 +85,6 @@
             </div>
             <div class="form-group">
                 <label>Status</label>
-                <?php $statusesArray = json_decode($statuses->get($connection), true); ?>
                 <select class="form-control" name="statusId">
                     <?php
                     foreach ($statusesArray as $status): ?>

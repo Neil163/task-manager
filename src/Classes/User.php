@@ -4,6 +4,8 @@
 namespace App;
 
 
+use mysqli;
+
 class User
 {
     /**
@@ -12,7 +14,7 @@ class User
      * @param mysqli $connection
      * @return false|string
      */
-    public function get($connection)
+    public function get(mysqli $connection)
     {
         $users = array();
 
