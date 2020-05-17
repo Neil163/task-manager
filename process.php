@@ -64,13 +64,16 @@ if (isset($_GET['edit'])) {
 //Filter button is pressed
 if (isset($_GET['filter'])) {
     $filterStatusId = $_GET['filter'];
-    $tasksArray = json_decode($task->getJoin($connection, $filterStatusId), true);
+    $tasksArray = json_decode($task->getJoin(
+        $connection,
+        "WHERE status_id = {$_GET['filter']}"
+    ), true);
 }
 
 //Clear filter button is pressed
 if (isset($_GET['clear'])) {
-    //$filterStatusId = null;
-    //$tasksArray = json_decode($task->get($connection, $filterStatusId), true);
+    $filterStatusId = $_GET['clear'];
+    $tasksArray = json_decode($task->getJoin($connection, $filterStatusId), true);
 }
 
 //Update a task functionality

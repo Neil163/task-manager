@@ -39,7 +39,8 @@
                 <?php endforeach; ?>
             </tr>
         </table>
-
+        <a href="index.php?clear=<?php echo null; ?>"
+           class="btn btn-info">clear</a>
     </div>
     <div class="row justify-content-center">
         <table class="table">
