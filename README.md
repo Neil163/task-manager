@@ -10,4 +10,4 @@
 
 ## To run the php unit test:
 1. Do a ``composer install`` in the directory of the app
-2. Run this command ``vendor/phpunit/phpunit/phpunit``
+2. Run this command ``php vendor/phpunit/phpunit/phpunit``
